@@ -76,12 +76,7 @@ module Sorcery
             token_expiration_date_attr = @sorcery_config.activation_token_expires_at_attribute_name
             load_from_token(token, token_attr_name, token_expiration_date_attr)
           end
-          # Added class method to call at any time.
-          def send_activation_email!
-            if send_activation_needed_email?
-              send_activation_needed_email!
-            end
-          end
+
           protected
 
           # This submodule requires the developer to define his own mailer class to be used by it
@@ -116,6 +111,13 @@ module Sorcery
             self.send(:"#{config.activation_state_attribute_name}=", "active")
             send_activation_success_email! if send_activation_success_email?
             sorcery_adapter.save(:validate => false, :raise_on_failure => true)
+          end
+
+          # Added class method to call at any time.
+          def send_activation_email!
+            if send_activation_needed_email?
+              send_activation_needed_email!
+            end
           end
 
           protected
