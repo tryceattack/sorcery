@@ -54,7 +54,8 @@ module Sorcery
             # don't setup activation if no password supplied - this user is created automatically
             sorcery_adapter.define_callback :before, :create, :setup_activation, :if => Proc.new { |user| user.send(sorcery_config.password_attribute_name).present? }
             # don't send activation needed email if no crypted password created - this user is external (OAuth etc.)
-            sorcery_adapter.define_callback :after, :create, :send_activation_needed_email!, :if => :send_activation_needed_email?
+            # commented out below, manually call the activation
+            # sorcery_adapter.define_callback :after, :create, :send_activation_needed_email!, :if => :send_activation_needed_email?
           end
 
           base.sorcery_config.after_config << :validate_mailer_defined
@@ -75,7 +76,12 @@ module Sorcery
             token_expiration_date_attr = @sorcery_config.activation_token_expires_at_attribute_name
             load_from_token(token, token_attr_name, token_expiration_date_attr)
           end
-
+          # Added class method to call at any time.
+          def send_activation_email!
+            if send_activation_needed_email?
+              send_activation_needed_email!
+            end
+          end
           protected
 
           # This submodule requires the developer to define his own mailer class to be used by it
