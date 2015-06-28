@@ -46,7 +46,7 @@ module Sorcery
                              :@activation_mailer_disabled                  => false,
                              :@activation_needed_email_method_name         => :activation_needed_email,
                              :@activation_success_email_method_name        => :activation_success_email,
-                             :@prevent_non_active_users_to_login           => true)
+                             :@prevent_non_active_users_to_login           => false)
             reset!
           end
 
