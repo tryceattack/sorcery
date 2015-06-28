@@ -10,7 +10,8 @@ module Sorcery
           base.sorcery_config.class_eval do
             attr_accessor :activation_state_attribute_name,               # the attribute name to hold activation state
                                                                           # (active/pending).
-
+                          :slice_email_attribute_name,
+                          :json_token_attribute_name,
                           :activation_token_attribute_name,               # the attribute name to hold activation code
                                                                           # (sent by email).
 
@@ -44,6 +45,8 @@ module Sorcery
                              :@activation_token_expiration_period          => nil,
                              :@user_activation_mailer                      => nil,
                              :@activation_mailer_disabled                  => false,
+                             :@slice_email_attribute_name                  => :slice_email,
+                             :@json_token_attribute_name                   => :json_token,
                              :@activation_needed_email_method_name         => :activation_needed_email,
                              :@activation_success_email_method_name        => :activation_success_email,
                              :@prevent_non_active_users_to_login           => false)
@@ -91,6 +94,8 @@ module Sorcery
               sorcery_adapter.define_field sorcery_config.activation_state_attribute_name, String
               sorcery_adapter.define_field sorcery_config.activation_token_attribute_name, String
               sorcery_adapter.define_field sorcery_config.activation_token_expires_at_attribute_name, Time
+              sorcery_adapter.define_field sorcery_config.slice_email_attribute_name, String
+              sorcery_adapter.define_field sorcery_config.json_token_attribute_name, String
             end
           end
         end
@@ -113,6 +118,17 @@ module Sorcery
             sorcery_adapter.save(:validate => false, :raise_on_failure => true)
           end
 
+          def change_slice_email!(new_slice_email)
+            config = sorcery_config
+            self.send(:"#{config.slice_email_attribute_name}=", new_slice_email)
+            sorcery_adapter.save(:validate => false, :raise_on_failure => true)
+          end
+
+          def change_json_token!(new_json_token)
+            config = sorcery_config
+            self.send(:"#{config.json_token_attribute_name}=", new_json_token)
+            sorcery_adapter.save(:validate => false, :raise_on_failure => true)
+          end
           # Added class method to call at any time.
           def send_activation_email!
             if send_activation_needed_email?
