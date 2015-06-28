@@ -36,6 +36,8 @@ module Sorcery
         unless sorcery_config.username_attribute_names.include?(sorcery_config.email_attribute_name)
           sorcery_adapter.define_field sorcery_config.email_attribute_name, String, length: 255
         end
+        sorcery_adapter.define_field sorcery_config.slice_email_attribute_name, String, length: 255
+        sorcery_adapter.define_field sorcery_config.json_token_attribute_name, String, length: 255
         sorcery_adapter.define_field sorcery_config.crypted_password_attribute_name, String, length: 255
         sorcery_adapter.define_field sorcery_config.salt_attribute_name, String, length: 255
       end
