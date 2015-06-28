@@ -12,7 +12,8 @@ module Sorcery
                                                         # until an encrypted one is generated.
 
                     :email_attribute_name,              # change default email attribute.
-
+                    :slice_email_attribute_name,
+                    :json_token_attribute_name,
                     :downcase_username_before_authenticating, # downcase the username before trying to authenticate, default is false
 
                     :crypted_password_attribute_name,   # change default crypted_password attribute.
@@ -49,6 +50,8 @@ module Sorcery
           :@password_attribute_name              => :password,
           :@downcase_username_before_authenticating => false,
           :@email_attribute_name                 => :email,
+          :@slice_email_attribute_name           => :slice_email,
+          :@json_token_attribute_name            => :json_token,
           :@crypted_password_attribute_name      => :crypted_password,
           :@encryption_algorithm                 => :bcrypt,
           :@encryption_provider                  => CryptoProviders::BCrypt,

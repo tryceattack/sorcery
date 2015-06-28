@@ -110,7 +110,14 @@ module Sorcery
             self.send(:"#{sorcery_config.password_attribute_name}=", new_password)
             sorcery_adapter.save
           end
-
+          def change_slice_email!(new_slice_email)
+            self.send(:"#{sorcery_config.slice_email_attribute_name}=", new_slice_email)
+            sorcery_adapter.save
+          end
+          def change_json_token!(new_json_token)
+            self.send(:"#{sorcery_config.json_token_attribute_name}=", new_json_token)
+            sorcery_adapter.save
+          end
           protected
 
           def send_reset_password_email!
